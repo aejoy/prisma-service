@@ -12,8 +12,8 @@
 
 # Использование
 
-1. Скачивание исполняемого файла из [https://github.com/aejoy/prisma-service/releases](Releases)
-2. Скачивание и заполнение [./config.example.yaml](шаблона Config)
+1. Скачивание исполняемого файла из [Releases](https://github.com/aejoy/prisma-service/releases)
+2. Скачивание и заполнение [шаблона Config](./config.example.yaml)
 3. Скачивание migrations
 4. Запуск исполняемого файла
 
