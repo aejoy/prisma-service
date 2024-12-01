@@ -15,7 +15,7 @@ func PostgresMigrate(db *sql.DB) error {
 		return fmt.Errorf("with instance SQL error: %v\n", err)
 	}
 
-	src, err := (&file.File{}).Open("file://pkg/migrations")
+	src, err := (&file.File{}).Open("file://migrations")
 	if err != nil {
 		return fmt.Errorf("open migrations file error: %v\n", err)
 	}

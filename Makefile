@@ -7,7 +7,7 @@ build-and-run:
 
 .PHONY: build
 build:
-	go build -ldflags "-s -w" -o bin/prisma.exe ./cmd/api/main.go
+	go build -ldflags "-s -w" -o ./bin/prisma.exe ./cmd/api/main.go
 
 .PHONY: run
 run:

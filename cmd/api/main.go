@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/aejoy/prisma-service/internal/config"
 	"github.com/aejoy/prisma-service/internal/handlers/http"
@@ -14,7 +15,11 @@ import (
 )
 
 func main() {
-	cfg, err := config.NewConfig()
+	var cfgPath string
+	flag.StringVar(&cfgPath, "config", ".", "path to config file")
+	flag.Parse()
+
+	cfg, err := config.NewConfig(cfgPath)
 	if err != nil {
 		panic(err)
 	}

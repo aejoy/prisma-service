@@ -25,10 +25,10 @@ type Storage struct {
 	Region          string
 }
 
-func NewConfig() (cfg Config, err error) {
+func NewConfig(path string) (cfg Config, err error) {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath(path)
 
 	if err := viper.ReadInConfig(); err != nil {
 		return cfg, err

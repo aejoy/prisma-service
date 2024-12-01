@@ -1,6 +1,6 @@
 .idea
 .env
-config/config.yaml
-bin/
-pgdata/
-build/db/pgdata
+config.yaml
+scripts/db/pgdata
+scripts/bin
+scripts/release
