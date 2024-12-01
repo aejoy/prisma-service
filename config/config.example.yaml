@@ -1,0 +1,14 @@
+service:
+  allow.origin: ""
+  api.prefix: /
+  port: 4810
+storage:
+  domain: ""
+  endpoint: ""
+  accessKeyID: ""
+  secretAccessKey: ""
+  bucket: ""
+  region: ""
+postgres:
+  shards:
+    - ""

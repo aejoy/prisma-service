@@ -1,0 +1,6 @@
+.idea
+.env
+config/config.yaml
+bin/
+pgdata/
+build/db/pgdata
