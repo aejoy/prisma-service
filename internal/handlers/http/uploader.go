@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-func (h *PrismaHandlers) Upload(ctx fiber.Ctx) error {
+func (h *Handlers) Upload(ctx fiber.Ctx) error {
 	res := dto.Photos{}
 
 	defer func() {

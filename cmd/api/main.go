@@ -37,8 +37,8 @@ func main() {
 	}
 
 	service := photos.NewPhotoService(db, storage)
-	handlers := http.NewHTTPHandlers(service)
 
+	handlers := http.NewHTTPHandlers(service)
 	router := fiber.New(fiber.Config{BodyLimit: 30 * 1024 * 1024}) // max=30mB
 
 	router.Use(cors.New(cors.Config{

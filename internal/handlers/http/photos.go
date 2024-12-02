@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func (h *PrismaHandlers) Photos(ctx fiber.Ctx) error {
+func (h *Handlers) Photos(ctx fiber.Ctx) error {
 	res := dto.Photos{}
 
 	defer func() {
