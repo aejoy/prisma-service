@@ -12,13 +12,13 @@ type Storage interface {
 }
 
 type Repository interface {
-	GetPhotos() ([]*models.Photo, error)
+	GetPhotos(offset, count int) ([]*models.Photo, error)
 	GetPhotosByIDs(photoIDs []string) ([]*models.Photo, error)
 	CreatePhoto(photoID, creator, url, blurHash string, height, width, size int) error
 }
 
 type Service interface {
-	GetPhotos() ([]*models.Photo, error)
+	GetPhotos(offset, count int) ([]*models.Photo, error)
 	GetPhotosByIDs(photoIDs []string) ([]*models.Photo, error)
 	SavePhoto(creator string, src multipart.File, height, width int) (models.Photo, error)
 }

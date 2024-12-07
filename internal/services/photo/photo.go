@@ -2,6 +2,8 @@ package photo
 
 import (
 	"bytes"
+	"mime/multipart"
+
 	"github.com/aejoy/prisma-service/internal/interfaces"
 	"github.com/aejoy/prisma-service/internal/models"
 	"github.com/aejoy/prisma-service/pkg/consts"
@@ -9,7 +11,6 @@ import (
 	"github.com/aejoy/prisma-service/pkg/utils"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/pkg/errors"
-	"mime/multipart"
 )
 
 type Service struct {
@@ -21,8 +22,8 @@ func NewPhotoService(repo interfaces.Repository, storage interfaces.Storage) *Se
 	return &Service{repo, storage}
 }
 
-func (s *Service) GetPhotos() ([]*models.Photo, error) {
-	return s.repository.GetPhotos()
+func (s *Service) GetPhotos(offset, count int) ([]*models.Photo, error) {
+	return s.repository.GetPhotos(offset, count)
 }
 
 func (s *Service) GetPhotosByIDs(photoIDs []string) ([]*models.Photo, error) {

@@ -2,15 +2,16 @@ package converter
 
 import (
 	"bytes"
-	"github.com/disintegration/imaging"
 	"image"
 	_ "image/jpeg" //nolint:nolintlint
 	_ "image/png"
 	"io"
 
 	"github.com/aejoy/prisma-service/pkg/consts"
+	"github.com/disintegration/imaging"
 	"github.com/gen2brain/avif"
 	"github.com/pkg/errors"
+	_ "golang.org/x/image/webp" //nolint:nolintlint
 )
 
 func ToAVIF(src io.Reader, height, width int) ([]byte, error) {

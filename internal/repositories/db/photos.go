@@ -3,17 +3,37 @@ package db
 import (
 	"context"
 
-	"github.com/aejoy/prisma-service/pkg/consts"
-
 	"github.com/aejoy/prisma-service/internal/models"
+	"github.com/aejoy/prisma-service/pkg/consts"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func (db *DB) GetPhotos() ([]*models.Photo, error) {
+func (db *DB) GetPhotos(offset, count int) ([]*models.Photo, error) {
 	photos := make([]*models.Photo, 0)
 
-	for _, bucket := range db.buckets {
-		rows, err := bucket.Query(context.TODO(), "SELECT id, creator, \"to\", url, blur_hash, height, width, size, published, updated, archived FROM photo LIMIT 25;")
+	shards := len(db.buckets)
+
+	offsetPerBucket := offset / shards
+	countPerBucket := count / shards
+
+	countRemainder := count % shards
+	offsetRemainder := offset % shards
+
+	for i, bucket := range db.buckets {
+		count := countPerBucket
+		if i < countRemainder {
+			count++
+		}
+
+		offset := offsetPerBucket
+		if i < offsetRemainder {
+			offset++
+		}
+
+		rows, err := bucket.Query(context.TODO(),
+			"SELECT id, creator, \"to\", url, blur_hash, height, width, size, published, updated, archived FROM photo OFFSET $1 LIMIT $2;",
+			offset, count,
+		)
 		if err != nil {
 			return nil, err
 		}

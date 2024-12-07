@@ -17,6 +17,7 @@ linters-settings:
           - errors
           - time
           - sync
+          - strconv
           - image
           - context
           - testing
@@ -37,8 +38,9 @@ linters-settings:
           - github.com/pkg/errors
           - github.com/spf13/viper
           - github.com/zeebo/xxh3
-          - github.com/stretchr/testify/assert
           - golang.org/x/image
+          - github.com/disintegration/imaging
+          - github.com/stretchr/testify/assert
   lll:
     line-length: 200
 

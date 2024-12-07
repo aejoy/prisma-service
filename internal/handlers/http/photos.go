@@ -27,7 +27,13 @@ func (h *Handlers) Photos(ctx fiber.Ctx) error {
 
 		photos = photosByIDs
 	} else {
-		allPhotos, err := h.prismaService.GetPhotos()
+		offset, count, err := utils.GetPaginationParams(ctx)
+		if err != nil {
+			res.ErrorMessage = err.Error()
+			return nil
+		}
+
+		allPhotos, err := h.prismaService.GetPhotos(offset, count)
 		if err != nil {
 			res.ErrorMessage = err.Error()
 			return nil
