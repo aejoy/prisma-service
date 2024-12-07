@@ -12,8 +12,3 @@ build:
 .PHONY: run
 run:
 	./bin/prisma.exe
-
-
-
-#load-test:
-#	artillery run --output ./internal/tests/load-test/result.json ./internal/tests/load-test.yaml

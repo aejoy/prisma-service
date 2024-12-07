@@ -3,19 +3,22 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+
 	"github.com/aejoy/prisma-service/internal/config"
 	"github.com/aejoy/prisma-service/internal/handlers/http"
 	"github.com/aejoy/prisma-service/internal/repositories/db"
 	"github.com/aejoy/prisma-service/internal/repositories/storage"
-	"github.com/aejoy/prisma-service/internal/services/photos"
+	"github.com/aejoy/prisma-service/internal/services/photo"
+	"github.com/aejoy/prisma-service/pkg/consts"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/logger"
-	"log"
 )
 
 func main() {
 	var cfgPath string
+
 	flag.StringVar(&cfgPath, "config", ".", "path to config file")
 	flag.Parse()
 
@@ -36,10 +39,10 @@ func main() {
 		panic(err)
 	}
 
-	service := photos.NewPhotoService(db, storage)
+	service := photo.NewPhotoService(db, storage)
 
 	handlers := http.NewHTTPHandlers(service)
-	router := fiber.New(fiber.Config{BodyLimit: 30 * 1024 * 1024}) // max=30mB
+	router := fiber.New(fiber.Config{BodyLimit: consts.BodyLimit})
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins: []string{cfg.Service.AllowOrigin},

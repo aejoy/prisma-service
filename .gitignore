@@ -1,6 +1,5 @@
 .idea
 .env
 config.yaml
-scripts/db/pgdata
-scripts/bin
-scripts/release
+deployments/postgres/pgdata
+deployments/release

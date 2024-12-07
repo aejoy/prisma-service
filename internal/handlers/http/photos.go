@@ -1,11 +1,12 @@
 package http
 
 import (
+	"strings"
+
 	"github.com/aejoy/prisma-service/internal/handlers/http/dto"
 	"github.com/aejoy/prisma-service/internal/models"
 	"github.com/aejoy/prisma-service/pkg/utils"
 	"github.com/gofiber/fiber/v3"
-	"strings"
 )
 
 func (h *Handlers) Photos(ctx fiber.Ctx) error {
@@ -23,6 +24,7 @@ func (h *Handlers) Photos(ctx fiber.Ctx) error {
 			res.ErrorMessage = err.Error()
 			return nil
 		}
+
 		photos = photosByIDs
 	} else {
 		allPhotos, err := h.prismaService.GetPhotos()
@@ -30,6 +32,7 @@ func (h *Handlers) Photos(ctx fiber.Ctx) error {
 			res.ErrorMessage = err.Error()
 			return nil
 		}
+
 		photos = allPhotos
 	}
 

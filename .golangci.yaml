@@ -1,0 +1,93 @@
+run:
+  timeout: 5m
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        allow:
+          - math
+          - os
+          - fmt
+          - log
+          - io
+          - flag
+          - bytes
+          - strings
+          - errors
+          - time
+          - sync
+          - image
+          - context
+          - testing
+          - encoding/json
+          - database/sql
+          - net/http
+          - mime/multipart
+          - github.com/aejoy/prisma-service
+          - github.com/aws/aws-sdk-go-v2
+          - github.com/buckket/go-blurhash
+          - github.com/davidbyttow/govips/v2
+          - github.com/gen2brain/avif
+          - github.com/valyala/fasthttp
+          - github.com/gofiber/fiber/v3
+          - github.com/golang-migrate/migrate/v4
+          - github.com/jackc/pgx/v5
+          - github.com/matoous/go-nanoid/v2
+          - github.com/pkg/errors
+          - github.com/spf13/viper
+          - github.com/zeebo/xxh3
+          - github.com/stretchr/testify/assert
+          - golang.org/x/image
+  lll:
+    line-length: 200
+
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - copyloopvar
+    - funlen
+    - gochecknoglobals
+    - gocheckcompilerdirectives
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - godox
+    - err113
+    - gofmt
+    - goimports
+    - mnd
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - nestif
+    - noctx
+    - nolintlint
+    - prealloc
+    - predeclared
+    - revive
+    - staticcheck
+    - stylecheck
+    - testpackage
+    - thelper
+    - tparallel
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+    - wsl

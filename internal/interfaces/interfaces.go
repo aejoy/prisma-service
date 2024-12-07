@@ -1,8 +1,10 @@
 package interfaces
 
 import (
-	"github.com/aejoy/prisma-service/internal/models"
 	"io"
+	"mime/multipart"
+
+	"github.com/aejoy/prisma-service/internal/models"
 )
 
 type Storage interface {
@@ -18,5 +20,5 @@ type Repository interface {
 type Service interface {
 	GetPhotos() ([]*models.Photo, error)
 	GetPhotosByIDs(photoIDs []string) ([]*models.Photo, error)
-	CreatePhoto(creator string, file io.Reader, height, width, size int) (string, string, string, error)
+	SavePhoto(creator string, src multipart.File, height, width int) (models.Photo, error)
 }

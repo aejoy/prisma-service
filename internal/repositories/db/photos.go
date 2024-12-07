@@ -2,6 +2,9 @@ package db
 
 import (
 	"context"
+
+	"github.com/aejoy/prisma-service/pkg/consts"
+
 	"github.com/aejoy/prisma-service/internal/models"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -26,8 +29,8 @@ func (db *DB) GetPhotos() ([]*models.Photo, error) {
 				return nil, err
 			}
 
-			kb := float32(photo.Size) / 1_000
-			mb := float32(photo.Size) / 1_000 / 1_000
+			kb := float32(photo.Size) / consts.Kilobyte
+			mb := float32(photo.Size) / consts.Megabyte
 
 			if mb >= 1 {
 				photo.SizeInMB = mb
@@ -51,9 +54,11 @@ func (db *DB) GetPhotosByIDs(photoIDs []string) ([]*models.Photo, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		if buckets[bucket] == nil {
 			buckets[bucket] = make([]string, 0)
 		}
+
 		buckets[bucket] = append(buckets[bucket], photoID)
 	}
 
@@ -68,6 +73,16 @@ func (db *DB) GetPhotosByIDs(photoIDs []string) ([]*models.Photo, error) {
 			if err := rows.Scan(&photo.ID, &photo.Creator, &photo.To, &photo.URL, &photo.BlurHash, &photo.Height, &photo.Width, &photo.Size, &photo.Published, &photo.Updated, &photo.Archived); err != nil {
 				return nil, err
 			}
+
+			kb := float32(photo.Size) / consts.Kilobyte
+			mb := float32(photo.Size) / consts.Megabyte
+
+			if mb >= 1 {
+				photo.SizeInMB = mb
+			} else if kb >= 1 {
+				photo.SizeInKB = kb
+			}
+
 			photos = append(photos, photo)
 		}
 	}
@@ -85,5 +100,6 @@ func (db *DB) CreatePhoto(photoID, creator, url, blurHash string, height, width,
 		"INSERT INTO photo(id, creator, url, blur_hash, height, width, size) VALUES($1, $2, $3, $4, $5, $6, $7)",
 		photoID, creator, url, blurHash, height, width, size,
 	)
+
 	return err
 }

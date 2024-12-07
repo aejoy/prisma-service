@@ -1,78 +1,74 @@
-package tests
+package tests_test
 
 import (
 	"bytes"
-	"github.com/aejoy/prisma-service/pkg/photos"
 	"io"
 	"os"
 	"testing"
+
+	"github.com/aejoy/prisma-service/pkg/utils"
+
+	"github.com/gen2brain/avif"
+	"github.com/stretchr/testify/assert"
+
+	"github.com/aejoy/prisma-service/pkg/consts"
+
+	"github.com/aejoy/prisma-service/pkg/converter"
 )
 
 func TestToAVIF(t *testing.T) {
-	t.Run("avatar", func(t *testing.T) {
-		in, err := os.Open("./orig/ap.png")
-		if err != nil {
-			t.Error(err)
-		}
+	tests := []struct {
+		name          string
+		src, target   string
+		height, width int
+	}{
+		{name: "avatar", src: "./src/activity-pub.png", height: consts.AvatarHeight, width: consts.AvatarWidth},
+		{name: "banner", src: "./src/0aea769027635bfe5d6e8f0c6bf72102.png", height: consts.BannerHeight, width: consts.BannerWidth},
+		{name: "default", src: "./src/ee5d4adf8b65babba897c044cae8fbd8.jpg", height: 0, width: 0},
+	}
 
-		avifImg, err := photos.ProcessAvatar(in)
-		if err != nil {
-			t.Error(err)
-		}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			src, err := os.Open(test.src)
+			if err != nil {
+				t.Error(err)
+			}
 
-		r, err := io.ReadAll(bytes.NewBuffer(avifImg))
-		if err != nil {
-			t.Error(err)
-		}
+			if test.height == 0 && test.width == 0 {
+				height, width, err := utils.GetImageDimensions(consts.AvatarImageType, src)
+				if err != nil {
+					t.Error(err)
+				}
 
-		if err := os.WriteFile("./avif/ap.avif", r, 0600); err != nil {
-			t.Error(err)
-		}
-	})
+				if _, err := src.Seek(0, 0); err != nil {
+					t.Error(err)
+				}
 
-	t.Run("banner", func(t *testing.T) {
-		in, err := os.Open("./orig/0aea769027635bfe5d6e8f0c6bf72102.png")
-		if err != nil {
-			t.Error(err)
-		}
+				test.height = height
+				test.width = width
+			}
 
-		avifImg, err := photos.ProcessBanner(in)
-		if err != nil {
-			t.Error(err)
-		}
+			target, err := converter.ToAVIF(src, test.height, test.width)
+			if err != nil {
+				t.Error(err)
+			}
 
-		r, err := io.ReadAll(bytes.NewBuffer(avifImg))
-		if err != nil {
-			t.Error(err)
-		}
+			if _, err := src.Seek(0, 0); err != nil {
+				t.Error(err)
+			}
 
-		if err := os.WriteFile("./avif/0aea769027635bfe5d6e8f0c6bf72102.avif", r, 0600); err != nil {
-			t.Error(err)
-		}
-	})
+			srcBytes, err := io.ReadAll(src)
+			if err != nil {
+				t.Error(err)
+			}
 
-	t.Run("photo", func(t *testing.T) {
-		in, err := os.Open("./orig/ee5d4adf8b65babba897c044cae8fbd8.jpg")
-		if err != nil {
-			t.Error(err)
-		}
+			_, err = avif.Decode(bytes.NewBuffer(target))
+			if err != nil {
+				t.Error(err)
+			}
 
-		height, width, err := photos.GetMediaSizes(in)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if _, err := in.Seek(0, 0); err != nil {
-			t.Fatal(err)
-		}
-
-		img, err := photos.ToAVIF(in, height, width)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if err := os.WriteFile("./avif/ee5d4adf8b65babba897c044cae8fbd8.avif", img, 0600); err != nil {
-			t.Error(err)
-		}
-	})
+			assert.Greater(t, len(srcBytes), 0, "src len <= 0")
+			assert.Greater(t, len(target), 0, "target len <= 0")
+		})
+	}
 }
